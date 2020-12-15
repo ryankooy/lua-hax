@@ -1,5 +1,3 @@
--- local path = "C:/Users/rwkoo/Desktop/workhours.txt"
-local path = "C:/Users/Ry/Desktop/workhours.txt"
 print("Enter \"start\" to begin recording your time.")
 local start = io.read()
 
@@ -21,12 +19,18 @@ local function last_line(f)
 end
 
 if start == "start" then
-  local file = io.open(path, "a+")
-  local latest = last_line(file)
+  local path = "C:/Users/Ry/Desktop/workhours.txt"
+  local success, err = pcall(io.open(path, "a+"))
+  if not success then
+    File = io.open("C:/Users/rwkoo/Desktop/workhours.txt", "a+")
+  else
+    File = io.open(path, "a+")
+  end
+  local latest = last_line(File)
   local now = os.date("*t")
   local firsttime = os.time()
   local inpunch = punch("IN", now)
-  file:write("\n" .. inpunch)
+  File:write("\n" .. inpunch)
   print("Do not close this window!\nEnter \"stop\" when you're done . . .")
   io.read()
   local newnow = os.date("*t")
@@ -35,11 +39,11 @@ if start == "start" then
   local diffstring = string.format("%.2f", os.difftime(secondtime, firsttime) / 3600.00)
   local diff = tonumber(diffstring)
   local newtotal = latest + diff
-  file:write(outpunch)
-  file:write("\n+ " .. diffstring)
-  file:write("\nTOTAL HOURS FOR WEEK:\n")
-  file:write(newtotal)
-  file:close()
+  File:write(outpunch)
+  File:write("\n+ " .. diffstring)
+  File:write("\nTOTAL HOURS FOR WEEK:\n")
+  File:write(newtotal)
+  File:close()
 else
   print('What?')
 end
