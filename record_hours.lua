@@ -27,15 +27,13 @@ if start == "start" then
   local path = "C:/Users/Ry/Desktop/WorkHours.txt"
   local success, err = pcall(last_line, path)
   if not success then
-    File, Latest = last_line("C:/Users/rwkoo/Desktop/workhours.txt")
-    print(err)
+    File, Latest = last_line("C:/Users/rwkoo/github/workhours.txt")
   else
     File, Latest = last_line(path)
   end
   local now = os.date("*t")
   local firsttime = os.time()
   local inpunch = punch("IN", now)
-  File:write("\n" .. inpunch)
   print("Do not close this window!\nEnter \"stop\" when you're done . . .")
   io.read()
   local newnow = os.date("*t")
@@ -44,6 +42,7 @@ if start == "start" then
   local diffstring = string.format("%.2f", os.difftime(secondtime, firsttime) / 3600.00)
   local diff = tonumber(diffstring)
   local newtotal = Latest + diff
+  File:write("\n" .. inpunch)
   File:write(outpunch)
   File:write("\n+ " .. diffstring)
   File:write("\nTOTAL HOURS FOR WEEK:\n")
