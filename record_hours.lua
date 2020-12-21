@@ -8,10 +8,6 @@ end
 
 local function last_line(path)
   FileOpen = io.open(path, "a+")
-  if FileOpen == nil then
-    print("There's a problem . . .")
-    os.exit()
-  end
   local lines = {}
   for line in FileOpen:lines() do
     lines[#lines + 1] = line
@@ -27,7 +23,7 @@ if start == "start" then
   local path = "C:/Users/Ry/Desktop/WorkHours.txt"
   local success, err = pcall(last_line, path)
   if not success then
-    File, Latest = last_line("C:/Users/rwkoo/github/workhours.txt")
+    File, Latest = last_line("C:/Users/rwkoo/Desktop/workhours.txt")
   else
     File, Latest = last_line(path)
   end
