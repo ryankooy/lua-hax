@@ -6,27 +6,32 @@ local function punch(inout, tm)
       inout, tm.hour, tm.min, tm.month, tm.day, os.date("%A"))
 end
 
-local function last_line(f)
+local function last_line(path)
+  FileOpen = io.open(path, "a+")
+  if FileOpen == nil then
+    print("There's a problem . . .")
+    os.exit()
+  end
   local lines = {}
-  for line in f:lines() do
+  for line in FileOpen:lines() do
     lines[#lines + 1] = line
   end
   local last_time = lines[#lines]
   if tonumber(last_time) == nil then
     last_time = 0
   end
-  return tonumber(last_time)
+  return FileOpen, tonumber(last_time)
 end
 
 if start == "start" then
-  local path = "C:/Users/Ry/Desktop/workhours.txt"
-  local success, err = pcall(io.open(path, "a+"))
+  local path = "C:/Users/Ry/Desktop/WorkHours.txt"
+  local success, err = pcall(last_line, path)
   if not success then
-    File = io.open("C:/Users/rwkoo/Desktop/workhours.txt", "a+")
+    File, Latest = last_line("C:/Users/rwkoo/Desktop/workhours.txt")
+    print(err)
   else
-    File = io.open(path, "a+")
+    File, Latest = last_line(path)
   end
-  local latest = last_line(File)
   local now = os.date("*t")
   local firsttime = os.time()
   local inpunch = punch("IN", now)
@@ -38,7 +43,7 @@ if start == "start" then
   local outpunch = punch("OUT", newnow)
   local diffstring = string.format("%.2f", os.difftime(secondtime, firsttime) / 3600.00)
   local diff = tonumber(diffstring)
-  local newtotal = latest + diff
+  local newtotal = Latest + diff
   File:write(outpunch)
   File:write("\n+ " .. diffstring)
   File:write("\nTOTAL HOURS FOR WEEK:\n")
